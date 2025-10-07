@@ -101,6 +101,28 @@ int main()
             {
                 if (event.key.code == sf::Keyboard::Space)
                     count++;
+
+                    switch (GameState)
+                    {
+                    case WaitingStart:
+                        GameState = Timing;
+                        rules.setString("Counting... Press SPACEBAR to stop");
+                        count = 0;
+                        clock.restart();
+                        break;
+
+                    case Timing:
+                        GameState = Finished;
+                        rules.setString("Finished ! Press ECHAP to quit.\nYou counted to " + std::to_string(count) + " seconds.");
+                        break;
+
+                    case Finished:
+                        // Reset the game
+                        GameState = WaitingStart;
+                        rules.setString("Press SPACEBAR to start");
+                        count = 0;
+                        break;
+                    }
                 
                 if (event.key.code == sf::Keyboard::Escape)
                 {
@@ -108,6 +130,24 @@ int main()
                     window.close();
                 }
             }
+        }
+
+        switch (GameState)
+        {
+        case WaitingStart:
+            rules.setString("Press SPACEBAR to stop");
+            break;
+            
+        case Timing:
+            /* code */
+            break;
+
+        case Finished:
+            /* code */
+            break;
+        
+        default:
+            break;
         }
 
         float deltaTime = clock.getElapsedTime().asSeconds();
