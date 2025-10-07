@@ -5,6 +5,15 @@
 
 const double PI = 3.14159265358979323846;
 
+// --- Game state ---
+enum GameState
+{
+    WaitingStart,
+    Timing,
+    Finished
+};
+
+// --- Functions ---
 std::string getAppPath()
 {
     char cExeFilePath[256];
@@ -27,6 +36,8 @@ int main()
     // --- Window ---
     sf::RenderWindow window(sf::VideoMode(800, 600), "Chrono Spacer");
 
+    GameState gameState = WaitingStart;
+
     float turnPerSecond = 0.2f;
     
     // --- Circle ---
@@ -47,10 +58,17 @@ int main()
         return -1;
     }
 
-    sf::Text text;
-    text.setFont(font);
-    text.setString("Chrono Spacer");
-    text.setPosition(250.0f, 50.0f);
+    sf::Text title;
+    title.setFont(font);
+    title.setString("Chrono Spacer");
+    title.setPosition(200.0f, 50.0f);
+    title.setCharacterSize(50);
+
+    sf::Text rules;
+    rules.setFont(font);
+    rules.setString("Press SPACEBAR to start the game.\nPress ECHAP to quit the game.\nCount to 10 then press SPACEBAR.\nTry to count to the given time !");
+    rules.setPosition(10.0f, 200.0f);
+    rules.setCharacterSize(20);
 
     // --- Texture ---
     sf::Texture texture;
@@ -62,6 +80,7 @@ int main()
 
     sf::Sprite sprite;
     sprite.setTexture(texture);
+    sprite.setPosition(400.0f, 300.0f);
 
     // --- Time ---
     sf::Clock clock;
@@ -94,15 +113,16 @@ int main()
         float deltaTime = clock.getElapsedTime().asSeconds();
         clock.restart();
 
-        float deltaAngle = deltaTime * PI * 2.0f * turnPerSecond;
-        sprite.rotate(deltaAngle);
+        //float deltaAngle = deltaTime * PI * 2.0f * turnPerSecond;
+        //sprite.rotate(deltaAngle);
 
         sf::Vector2u textureSize = texture.getSize();
         sprite.setOrigin(textureSize.x / 2.0f, textureSize.y / 2.0f);
 
         window.clear();
         window.draw(sprite);
-        window.draw(text);
+        window.draw(title);
+        window.draw(rules);
         window.display();
     }
 
