@@ -38,18 +38,21 @@ int main()
 
     GameState gameState = WaitingStart;
 
+    int timeToFind = 10;
+    int WinInterval = 1;
+
     float turnPerSecond = 0.2f;
-    
+
     // --- Circle ---
-    //sf::CircleShape circle;
-    //circle.setRadius(100.0f);
-    //circle.setPosition(400.0f, 300.0f);
-    //circle.setFillColor(sf::Color::Red);
+    // sf::CircleShape circle;
+    // circle.setRadius(100.0f);
+    // circle.setPosition(400.0f, 300.0f);
+    // circle.setFillColor(sf::Color::Red);
 
     // --- Debug paths ---
     std::cout << "Chemin de l'app : " << getAppPath() << std::endl;
     std::cout << "Chemin des assets : " << getAssetsPath() << std::endl;
-    
+
     // --- Text ---
     sf::Font font;
     if (!font.loadFromFile(getAssetsPath() + "Game Of Squids.ttf"))
@@ -85,8 +88,6 @@ int main()
     // --- Time ---
     sf::Clock clock;
 
-    int count = 0;
-
     // --- Main loop ---
     while (window.isOpen())
     {
@@ -95,66 +96,69 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-            
+
             // --- Keyboard input ---
             if (event.type == sf::Event::KeyPressed)
             {
                 if (event.key.code == sf::Keyboard::Space)
-                    count++;
 
-                    switch (GameState)
+                    switch (gameState)
                     {
                     case WaitingStart:
-                        GameState = Timing;
-                        rules.setString("Counting... Press SPACEBAR to stop");
-                        count = 0;
+                        gameState = Timing;
+                        rules.setString("Press SPACEBAR to stop");
                         clock.restart();
                         break;
 
                     case Timing:
-                        GameState = Finished;
-                        rules.setString("Finished ! Press ECHAP to quit.\nYou counted to " + std::to_string(count) + " seconds.");
+                        float deltaTime = clock.getElapsedTime().asSeconds();
+
+                        gameState = Finished;
+
+                        if (deltaTime >= timeToFind - WinInterval && deltaTime <= timeToFind + WinInterval)
+                        {
+                            rules.setString("You won !\nNew win interval : " + std::to_string(WinInterval * 0.2f) + " seconds.");
+                        }
+                        else
+                        {
+                            rules.setString("You lost !\nThe target time was " + std::to_string(timeToFind) + " seconds.");
+                        }
                         break;
 
                     case Finished:
                         // Reset the game
-                        GameState = WaitingStart;
-                        rules.setString("Press SPACEBAR to start");
-                        count = 0;
+                        gameState = WaitingStart;
+                        rules.setString("Press SPACEBAR to restart");
                         break;
                     }
-                
+
                 if (event.key.code == sf::Keyboard::Escape)
                 {
-                    std::cout << "Space key pressed : " << count << " times" << std::endl;
                     window.close();
                 }
             }
         }
 
-        switch (GameState)
+        switch (gameState)
         {
         case WaitingStart:
-            rules.setString("Press SPACEBAR to stop");
+
             break;
-            
+
         case Timing:
-            /* code */
+
             break;
 
         case Finished:
-            /* code */
+
             break;
-        
+
         default:
             break;
         }
 
-        float deltaTime = clock.getElapsedTime().asSeconds();
-        clock.restart();
-
-        //float deltaAngle = deltaTime * PI * 2.0f * turnPerSecond;
-        //sprite.rotate(deltaAngle);
+        // float deltaAngle = deltaTime * PI * 2.0f * turnPerSecond;
+        // sprite.rotate(deltaAngle);
 
         sf::Vector2u textureSize = texture.getSize();
         sprite.setOrigin(textureSize.x / 2.0f, textureSize.y / 2.0f);
