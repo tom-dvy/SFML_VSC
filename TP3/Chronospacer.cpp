@@ -37,8 +37,10 @@ int main()
     sf::RenderWindow window(sf::VideoMode(800, 600), "Chrono Spacer");
 
     GameState gameState = WaitingStart;
+    
+    srand(time(NULL));
+    int timeToFind = (float)(rand() % (10 + 1));
 
-    int timeToFind = 10;
     int WinInterval = 1;
 
     float turnPerSecond = 0.2f;
@@ -69,7 +71,7 @@ int main()
 
     sf::Text rules;
     rules.setFont(font);
-    rules.setString("Press SPACEBAR to start the game.\nPress ECHAP to quit the game.\nCount to 10 then press SPACEBAR.\nTry to count to the given time !");
+    rules.setString("Press SPACEBAR to start the game.\nPress ECHAP to quit the game.\nCount to " + std::to_string(timeToFind) +" then press SPACEBAR.");
     rules.setPosition(10.0f, 200.0f);
     rules.setCharacterSize(20);
 
@@ -111,6 +113,7 @@ int main()
                         break;
 
                     case Timing:
+                    {
                         float deltaTime = clock.getElapsedTime().asSeconds();
 
                         gameState = Finished;
@@ -118,18 +121,23 @@ int main()
                         if (deltaTime >= timeToFind - WinInterval && deltaTime <= timeToFind + WinInterval)
                         {
                             rules.setString("You won !\nNew win interval : " + std::to_string(WinInterval * 0.2f) + " seconds.");
+                            WinInterval *= 0.2f;
                         }
                         else
                         {
                             rules.setString("You lost !\nThe target time was " + std::to_string(timeToFind) + " seconds.");
                         }
-                        break;
+                    }
+                    break;
 
                     case Finished:
+                    {
                         // Reset the game
                         gameState = WaitingStart;
-                        rules.setString("Press SPACEBAR to restart");
+                        timeToFind = (float)(rand() % (10 + 1));
+                        rules.setString("Press SPACEBAR to restart\nCount to " + std::to_string(timeToFind) +" then press SPACEBAR.");
                         break;
+                    }
                     }
 
                 if (event.key.code == sf::Keyboard::Escape)
@@ -139,7 +147,7 @@ int main()
             }
         }
 
-        switch (gameState)
+        /*switch (gameState)
         {
         case WaitingStart:
 
@@ -155,14 +163,14 @@ int main()
 
         default:
             break;
-        }
+        }*/
 
         // float deltaAngle = deltaTime * PI * 2.0f * turnPerSecond;
         // sprite.rotate(deltaAngle);
 
         sf::Vector2u textureSize = texture.getSize();
         sprite.setOrigin(textureSize.x / 2.0f, textureSize.y / 2.0f);
-
+        
         window.clear();
         window.draw(sprite);
         window.draw(title);
