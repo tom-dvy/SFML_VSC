@@ -26,9 +26,9 @@ void Ball::update()
     if (shape.getPosition().y < 0 || shape.getPosition().y > 590)
     {
         reverseY();
-        /*speedX = speedX + 0.2f;
-        speedY = speedY + 0.2f;
-        std::cout << "speedX : " << speedX << " | speedY : " << speedY << std::endl;*/
+        speedX = speedX * 1.5f;
+        speedY = speedY * 1.5f;
+        std::cout << "speedX : " << speedX << " | speedY : " << speedY << std::endl;
     }
     
 }
