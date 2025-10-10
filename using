@@ -1,0 +1,7 @@
+using ...;
+
+public class Player : MonoBehaviour {
+    public async Awaitable WaitInitialized() {
+        await Awaitable.WaitForSecondsAsync(0.3f);
+    }
+}
