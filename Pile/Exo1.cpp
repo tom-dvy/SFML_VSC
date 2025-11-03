@@ -8,13 +8,13 @@ int main()
 {
     int remainingTurn = 100;
     int playerId = 0;
-    do
+
+    while (&remainingTurn > 0)
     {
         StartTurn_A(&remainingTurn, &playerId);
         SwitchPlayer_B(&remainingTurn, &playerId);
         TurnLeft_C(&remainingTurn, &playerId);
-    } while (remainingTurn > 0);
-
+    }
     return 0;
 }
 
