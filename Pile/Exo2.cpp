@@ -38,32 +38,44 @@ Coordinate FindHighestAdjacent(int tab[5][5], int size, int i, int j)
     int maxValue = tab[i][j];
     Coordinate result {i, j};
 
-    // Case Bas
+    // Case Droite
     if (tab[i][j+1] > tab[i][j] && j + 1 < size) 
     {
-        maxValue = tab[i][j+1];
-        result = {i, j+1};    
-    }
-
-    // Case Haut
-    if (tab[i][j-1] > tab[i][j] && j - 1 >= 0) 
-    {
-        maxValue = tab[i][j-1];
-        result = {i, j-1};    
-    }
-
-    // Case Droite
-    if (tab[i+1][j] > tab[i][j] && i + 1 < size) 
-    {
-        maxValue = tab[i+1][j];
-        result = {i+1, j};    
+        if (tab[i][j+1] > maxValue)
+        {
+            maxValue = tab[i][j+1];
+            result = {i, j+1};  
+        }    
     }
 
     // Case Gauche
+    if (tab[i][j-1] > tab[i][j] && j - 1 >= 0) 
+    {
+        if (tab[i][j-1] > maxValue)
+        {
+            maxValue = tab[i][j-1];
+            result = {i, j-1};    
+        }   
+    }
+
+    // Case Bas
+    if (tab[i+1][j] > tab[i][j] && i + 1 < size) 
+    {
+        if (tab[i+1][j] > maxValue)
+        {
+            maxValue = tab[i+1][j];
+            result = {i+1, j};   
+        }    
+    }
+
+    // Case Haut
     if (tab[i-1][j] > tab[i][j] && i - 1 >= 0) 
     {
-        maxValue = tab[i-1][j];
-        result = {i-1, j};    
+        if (tab[i-1][j] > maxValue)
+        {
+            maxValue = tab[i-1][j];
+            result = {i-1, j}; 
+        }    
     }
 
     return result;
@@ -71,19 +83,14 @@ Coordinate FindHighestAdjacent(int tab[5][5], int size, int i, int j)
 
 Coordinate PathFinder_recursive(int tab[5][5], int size, int i, int j, int moveLeft)
 {
-    if (moveLeft <= 0)
+    if (moveLeft <= 0) {
         return {i, j};
-
-    tab[i][j] = 0;
+    }
 
     Coordinate next = FindHighestAdjacent(tab, size, i, j);
-    std::cout << "Déplacement vers : (" << next.i << ", " << next.j << ")" << std::endl;
+    std::cout << "Déplacement vers : (" << next.i << ", " << next.j << "), valeur : " << tab[next.i][next.j] << std::endl;
 
-    if (next.i == i && next.j == j)
-        return {i, j};
-
-    if (tab[next.i][next.j] <= 0)
-        return {i, j};
+    tab[next.i][next.j] = 0;
 
     return PathFinder_recursive(tab, size, next.i, next.j, moveLeft - 1);
 }
