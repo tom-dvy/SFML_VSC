@@ -7,7 +7,7 @@ struct Coordinate
 };
 
 Coordinate FindHighestAdjacent(int tab[5][5], int size, int i, int j);
-Coordinate PathFinder_iterative(int tab[5][5], int size, int i, int j, int moveLeft);
+Coordinate PathFinder(int tab[5][5], int size, int i, int j, int moveLeft);
 
 int main()
 {
@@ -29,7 +29,7 @@ int main()
     std::cout << "Direction de la plus grande case : (" << coord.i << ", " << coord.j << ")" << std::endl;
     std::cout << "Différence entre les cases : (" << coord.i - middle.i << ", " << coord.j - middle.j << ")" << std::endl;
 
-    Coordinate finalPos = PathFinder_iterative(tab, 5, middle.i, middle.j, 5);
+    Coordinate finalPos = PathFinder(tab, 5, middle.i, middle.j, 5);
     std::cout << "Position finale après déplacement : (" << finalPos.i << ", " << finalPos.j << ")" << std::endl;
 }
 
@@ -81,7 +81,7 @@ Coordinate FindHighestAdjacent(int tab[5][5], int size, int i, int j)
     return result;
 }
 
-Coordinate PathFinder_iterative(int tab[5][5], int size, int i, int j, int moveLeft)
+Coordinate PathFinder(int tab[5][5], int size, int i, int j, int moveLeft)
 {
     Coordinate current = {i, j};
     
