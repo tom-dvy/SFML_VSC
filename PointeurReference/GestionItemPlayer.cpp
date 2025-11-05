@@ -9,6 +9,7 @@ enum ItemType
     Bow
 };
 
+// ---- Les mains disponibles ----
 enum Hand
 {
     Left,
@@ -35,7 +36,8 @@ struct Player
 
 // ---- Prototypes ----
 void DisplayItem(Item &item);
-void Grab(Player &playerA,Item &item, Hand hand);
+void Grab(Player &playerA, Item &item, Hand hand);
+void Drop(Player &playerA, Hand hand);
 
 int main()
 {
@@ -66,17 +68,21 @@ int main()
 
 // ---- Le player attrape des items ----
     Grab(playerA, sword, Left);
+
+// ---- Le player lâche les items ----
+    Drop(playerA, Left);
 }
 
 // ---- Affichage des caractéristiques d'un item ----
 void DisplayItem(Item &item)
 {
-    std::cout << "------------------" << std::endl;
     std::cout << "Item Type : " << item.type << std::endl;
     std::cout << "Durability : " << item.durability << std::endl;
     std::cout << "Quality : " << item.quality << std::endl;
+    std::cout << "------------------" << std::endl;
 }
 
+// ---- Fonction permettant au player de prendre un item ----
 void Grab(Player &playerA,Item &item, Hand hand)
 {
     if (hand == Both)
@@ -89,7 +95,7 @@ void Grab(Player &playerA,Item &item, Hand hand)
 
         playerA.rightHand = &item;
         playerA.leftHand = &item;
-        std::cout << "Item dans les deux mains" << std::endl;
+        std::cout << item.type <<" dans les deux mains" << std::endl;
     }
     else
     if (hand == Right)
@@ -101,7 +107,7 @@ void Grab(Player &playerA,Item &item, Hand hand)
         }
 
         playerA.rightHand = &item;
-        std::cout << "Item dans la main droite" << std::endl;
+        std::cout << item.type << " dans la main droite" << std::endl;
     }
     else 
     if (hand == Left)
@@ -113,6 +119,15 @@ void Grab(Player &playerA,Item &item, Hand hand)
         }
 
         playerA.leftHand = &item;
-        std::cout << "Item dans la main gauche" << std::endl;
+        std::cout << item.type << " dans la main gauche" << std::endl;
     }
+}
+
+// ---- Fonction permettant au player de lâcher un item ----
+void Drop(Player &playerA, Hand hand)
+{
+    playerA.leftHand = nullptr;
+    playerA.rightHand = nullptr;
+
+    std::cout << "Les mains sont vides, les items ont été lâchés" << std::endl;
 }
