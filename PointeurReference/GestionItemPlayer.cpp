@@ -34,6 +34,20 @@ struct Player
     Item *leftHand;
 };
 
+// ---- Juste pour la lisibilité dans la console ----
+std::string ItemTypeToString(ItemType type)
+{
+    switch (type)
+    {
+        case Sword:  return "Sword";
+        case Shield: return "Shield";
+        case Wand:   return "Wand";
+        case Bow:    return "Bow";
+        default:     return "Empty";
+    }
+}
+
+
 // ---- Prototypes ----
 void DisplayItem(Item &item);
 void Grab(Player &playerA, Item &item, Hand hand);
@@ -76,21 +90,48 @@ int main()
     Drop(playerA, Right);
 
     Grab(playerA, bow, Both);
+
+// ---- Affichage du player ----
+    DisplayPlayer(playerA);
 }
 
 // ---- Affichage des caractéristiques d'un item ----
 void DisplayItem(Item &item)
 {
-    std::cout << "Item Type : " << item.type << std::endl;
-    std::cout << "Durability : " << item.durability << std::endl;
-    std::cout << "Quality : " << item.quality << std::endl;
+    std::cout << "Type d'item : " << ItemTypeToString(item.type) << std::endl;
+    std::cout << "Durabilité : " << item.durability << std::endl;
+    std::cout << "Qualité : " << item.quality << std::endl;
     std::cout << "------------------" << std::endl;
 }
 
 // ---- Affichage des caractéristiques du player ----
 void DisplayPlayer(Player &playerA)
 {
-    
+    std::cout << "------------------" << std::endl;
+    std::cout << "Nom : " << playerA.name << std::endl;
+    std::cout << "Santé : " << playerA.health << std::endl;
+
+    std::cout << "\nMain gauche : ";
+    if (playerA.leftHand != nullptr)
+    {
+        std::cout << std::endl;
+        DisplayItem(*playerA.leftHand);
+    }
+    else
+    {
+        std::cout << "vide" << std::endl;
+    }
+
+    std::cout << "Main droite : ";
+    if (playerA.rightHand != nullptr)
+    {
+        std::cout << std::endl;
+        DisplayItem(*playerA.rightHand);
+    }
+    else
+    {
+        std::cout << "vide" << std::endl;
+    }
 }
 
 // ---- Fonction permettant au player de prendre un item ----
@@ -106,7 +147,7 @@ void Grab(Player &playerA,Item &item, Hand hand)
 
         playerA.rightHand = &item;
         playerA.leftHand = &item;
-        std::cout << item.type <<" dans les deux mains" << std::endl;
+        std::cout << ItemTypeToString(item.type) <<" dans les deux mains" << std::endl;
     }
     else
     if (hand == Right)
@@ -118,7 +159,7 @@ void Grab(Player &playerA,Item &item, Hand hand)
         }
 
         playerA.rightHand = &item;
-        std::cout << item.type << " dans la main droite" << std::endl;
+        std::cout << ItemTypeToString(item.type) << " dans la main droite" << std::endl;
     }
     else 
     if (hand == Left)
@@ -130,7 +171,7 @@ void Grab(Player &playerA,Item &item, Hand hand)
         }
 
         playerA.leftHand = &item;
-        std::cout << item.type << " dans la main gauche" << std::endl;
+        std::cout << ItemTypeToString(item.type) << " dans la main gauche" << std::endl;
     }
 }
 
