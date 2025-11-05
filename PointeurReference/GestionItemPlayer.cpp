@@ -38,6 +38,7 @@ struct Player
 void DisplayItem(Item &item);
 void Grab(Player &playerA, Item &item, Hand hand);
 void Drop(Player &playerA, Hand hand);
+void DisplayPlayer(Player &playerA);
 
 int main()
 {
@@ -68,9 +69,13 @@ int main()
 
 // ---- Le player attrape des items ----
     Grab(playerA, sword, Left);
+    Grab(playerA, shield, Right);
 
 // ---- Le player lâche les items ----
     Drop(playerA, Left);
+    Drop(playerA, Right);
+
+    Grab(playerA, bow, Both);
 }
 
 // ---- Affichage des caractéristiques d'un item ----
@@ -80,6 +85,12 @@ void DisplayItem(Item &item)
     std::cout << "Durability : " << item.durability << std::endl;
     std::cout << "Quality : " << item.quality << std::endl;
     std::cout << "------------------" << std::endl;
+}
+
+// ---- Affichage des caractéristiques du player ----
+void DisplayPlayer(Player &playerA)
+{
+    
 }
 
 // ---- Fonction permettant au player de prendre un item ----
@@ -126,8 +137,43 @@ void Grab(Player &playerA,Item &item, Hand hand)
 // ---- Fonction permettant au player de lâcher un item ----
 void Drop(Player &playerA, Hand hand)
 {
-    playerA.leftHand = nullptr;
-    playerA.rightHand = nullptr;
+    if (hand == Right)
+    {
+        if (playerA.rightHand == nullptr)
+        {
+            std::cout << "Main droite déjà vide" << std::endl;
+            return;
+        }
 
-    std::cout << "Les mains sont vides, les items ont été lâchés" << std::endl;
+        playerA.rightHand = nullptr;
+        std::cout << "Main droite vide, item lâché" << std::endl;
+        return;
+    }
+
+    if (hand == Left)
+    {
+        if (playerA.leftHand == nullptr)
+        {
+            std::cout << "Main gauche déjà vide" << std::endl;
+            return;
+        }
+
+        playerA.leftHand = nullptr;
+        std::cout << "Main gauche vide, item lâché" << std::endl;
+        return;
+    } 
+
+    if (hand == Both)
+    {
+        if (playerA.rightHand == nullptr && playerA.leftHand == nullptr)
+        {
+            std::cout << "Mains déjà vides" << std::endl;
+            return;
+        }
+
+        playerA.rightHand = nullptr;
+        playerA.leftHand = nullptr;
+        std::cout << "Mains vides, item(s) lâché(s)" << std::endl;
+        return;
+    }
 }
