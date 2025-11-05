@@ -157,42 +157,42 @@ void Grab(Player &player, Item &item, Hand hand)
         {
             if (player.rightHand != nullptr || player.leftHand != nullptr)
             {
-                std::cout << "Les mains sont déjà prises" << std::endl;
+                std::cout << "Les mains de " << player.name << " sont déjà prises" << std::endl;
                 return;
             }
 
             player.rightHand = &item;
             player.leftHand = &item;
             item.owner = &player;
-            std::cout << ItemTypeToString(item.type) << " dans les deux mains" << std::endl;
+            std::cout << ItemTypeToString(item.type) << " dans les deux mains de " << player.name << std::endl;
         }
         else if (hand == Right)
         {
             if (player.rightHand != nullptr)
             {
-                std::cout << "Main droite déjà prise" << std::endl;
+                std::cout << "Main droite de " << player.name << " déjà prise" << std::endl;
                 return;
             }
 
             player.rightHand = &item;
             item.owner = &player;
-            std::cout << ItemTypeToString(item.type) << " dans la main droite" << std::endl;
+            std::cout << ItemTypeToString(item.type) << " dans la main droite de "<< player.name << std::endl;
         }
         else if (hand == Left)
         {
             if (player.leftHand != nullptr)
             {
-                std::cout << "Main gauche déjà prise" << std::endl;
+                std::cout << "Main gauche de " << player.name << " déjà prise" << std::endl;
                 return;
             }
 
             player.leftHand = &item;
             item.owner = &player;
-            std::cout << ItemTypeToString(item.type) << " dans la main gauche" << std::endl;
+            std::cout << ItemTypeToString(item.type) << " dans la main gauche de " << player.name << std::endl;
         }
     }
     else
-    std::cout << "Cet item est déjà pris par :" << &player << std::endl;
+    std::cout << ItemTypeToString(item.type) << " est déjà pris" << std::endl;
 }
 
 // ---- Fonction permettant au player de lâcher un item ----
@@ -202,12 +202,12 @@ void Drop(Player &player, Hand hand)
     {
         if (player.rightHand == nullptr)
         {
-            std::cout << "Main droite déjà vide" << std::endl;
+            std::cout << "Main droite de " << player.name << " déjà vide" << std::endl;
             return;
         }
 
         player.rightHand = nullptr;
-        std::cout << "Main droite vide, item lâché" << std::endl;
+        std::cout << "Main droite de " << player.name << " vidée, item lâché" << std::endl;
         return;
     }
 
@@ -215,12 +215,12 @@ void Drop(Player &player, Hand hand)
     {
         if (player.leftHand == nullptr)
         {
-            std::cout << "Main gauche déjà vide" << std::endl;
+            std::cout << "Main gauche de " << player.name << " déjà vide" << std::endl;
             return;
         }
 
         player.leftHand = nullptr;
-        std::cout << "Main gauche vide, item lâché" << std::endl;
+        std::cout << "Main gauche de " << player.name << " vidée, item lâché" << std::endl;
         return;
     }
 
@@ -228,13 +228,13 @@ void Drop(Player &player, Hand hand)
     {
         if (player.rightHand == nullptr && player.leftHand == nullptr)
         {
-            std::cout << "Mains déjà vides" << std::endl;
+            std::cout << "Mains de " << player.name << " déjà vides" << std::endl;
             return;
         }
 
         player.rightHand = nullptr;
         player.leftHand = nullptr;
-        std::cout << "Mains vides, item(s) lâché(s)" << std::endl;
+        std::cout << "Mains de " << player.name << " vidées, item(s) lâché(s)" << std::endl;
         return;
     }
 }
