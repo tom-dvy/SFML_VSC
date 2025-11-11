@@ -7,7 +7,7 @@ int main()
         // allouer dynamiquement un tableau de taille i
         int * tab = new int[i];
 
-        // remplir chaque case avec sa valeur d'index (0..i-1)
+        // remplir chaque case avec sa valeur d'index
         for (int j = 0; j < i; ++j)
         {
             tab[j] = j;
