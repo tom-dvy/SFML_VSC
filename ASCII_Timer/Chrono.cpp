@@ -26,7 +26,6 @@ int AskDuration()
     {
         return duration;
     }
-    
 }
 
 float GetTime()
@@ -37,22 +36,18 @@ float GetTime()
 
 void UpdateChrono(Chrono &chrono, float deltaTime)
 {
-    if (chrono.isFinished == false)
-    {
-        chrono.elapsedTime += deltaTime;
-        if (chrono.elapsedTime >= chrono.duration)
-        {
-            chrono.isFinished = true;
-        }
-    }
-    
+
+    chrono.elapsedTime += deltaTime;
+
+    if (chrono.elapsedTime >= chrono.duration)
+        chrono.isFinished = true;
 }
 
-void InitializeOutput() 
+void InitializeOutput()
 {
-    for (int i = 0; i < 11; i++) 
+    for (int i = 0; i < 11; i++)
     {
-        for (int j = 0; j < 11; j++) 
+        for (int j = 0; j < 11; j++)
         {
             tab[i][j] = '-';
             if (tab[5][5])
@@ -70,9 +65,9 @@ void InitializeOutput()
 void DisplayOutput()
 {
     std::string caracteres = "Bonjour !";
-    for (int i = 0; i < 11; i++) 
+    for (int i = 0; i < 11; i++)
     {
-        for (int j = 0; j < 11; j++) 
+        for (int j = 0; j < 11; j++)
         {
             std::cout << tab[i][j];
         }
@@ -83,19 +78,19 @@ void DisplayOutput()
 void ResetDisplay()
 {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD pos = { 0, 0 };
+    COORD pos = {0, 0};
     SetConsoleCursorPosition(hConsole, pos);
 }
 
 void WriteSecond(Chrono &chrono)
 {
 
-    int posX = ((int) (chrono.elapsedTime * 11)) % 11;
+    int posX = ((int)(chrono.elapsedTime * 11)) % 11;
 
     for (int x = 0; x < 11; x++)
         tab[x][0] = ' ';
 
-        tab[posX][0] = '0';
+    tab[posX][0] = '0';
 }
 
 void WriteTimeLeft(Chrono &chrono)
@@ -106,8 +101,8 @@ void WriteTimeLeft(Chrono &chrono)
         for (int x = 0; x < 11; x++)
             tab[x][y] = ' ';
 
-    int posX = (int)((cos(chrono.elapsedTime * 2 * PI / chrono.duration - PI / 2) * 3)+ 5.5f);
-    int posY = (int)((sin(chrono.elapsedTime * 2 * PI / chrono.duration - PI / 2) * 3)+ 5.5f);
+    int posX = (int)((cos(chrono.elapsedTime * 2 * PI / chrono.duration - PI / 2) * 3) + 5.5f);
+    int posY = (int)((sin(chrono.elapsedTime * 2 * PI / chrono.duration - PI / 2) * 3) + 5.5f);
 
     tab[posX][posY] = '*';
 }
@@ -118,7 +113,7 @@ void WriteChrono(Chrono &chrono)
     WriteTimeLeft(chrono);
 }
 
-int main() 
+int main()
 {
     std::cout << "Chrono running..." << std::endl;
 
@@ -141,14 +136,16 @@ int main()
 
     while (chrono.isFinished == false)
     {
-        ResetDisplay();
-        WriteChrono(chrono);
-        DisplayOutput();
-        UpdateChrono(chrono, 0.0f);
         float newTime = GetTime();
         float deltaTime = newTime - currentTime;
-        chrono.elapsedTime += deltaTime;
         currentTime = newTime;
+
+        UpdateChrono(chrono, deltaTime);
+
+        ResetDisplay();
+
+        WriteChrono(chrono);
+        DisplayOutput();
     }
     std::cout << "Fin du chrono ! /[^_^]/" << std::endl;
 
