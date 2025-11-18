@@ -20,6 +20,8 @@ int AskDuration()
     if (duration <= 0)
     {
         std::cout << "Durée invalide, saisir un nombre positif " << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return AskDuration();
     }
     else
@@ -87,8 +89,8 @@ void WriteSecond(Chrono &chrono)
 
     int posX = ((int)(chrono.elapsedTime * 11)) % 11;
 
-    for (int x = 0; x < 11; x++)
-        tab[x][0] = ' ';
+    /*for (int x = 0; x < 11; x++)
+        tab[x][0] = ' ';*/
 
     tab[posX][0] = '0';
 }
@@ -97,9 +99,9 @@ void WriteTimeLeft(Chrono &chrono)
 {
     double PI = 3.14159265358979323846;
 
-    for (int y = 0; y < 11; y++)
+    /*for (int y = 0; y < 11; y++)
         for (int x = 0; x < 11; x++)
-            tab[x][y] = ' ';
+            tab[x][y] = ' ';*/
 
     int posX = (int)((cos(chrono.elapsedTime * 2 * PI / chrono.duration - PI / 2) * 3) + 5.5f);
     int posY = (int)((sin(chrono.elapsedTime * 2 * PI / chrono.duration - PI / 2) * 3) + 5.5f);
@@ -115,19 +117,18 @@ void WriteChrono(Chrono &chrono)
 
 int main()
 {
+    Chrono chrono;
+    chrono.duration = AskDuration();
+    chrono.elapsedTime = 0.0f;
+    chrono.isFinished = false;
+
     std::cout << "Chrono running..." << std::endl;
 
     std::cout << "-------------------------" << std::endl;
-    int duration = AskDuration();
-    std::cout << "Durée du chrono : " << duration << " secondes" << std::endl;
+    std::cout << "Durée du chrono : " << chrono.duration << " secondes" << std::endl;
 
     std::cout << "-------------------------" << std::endl;
     float currentTime = GetTime();
-
-    Chrono chrono;
-    chrono.duration = duration;
-    chrono.elapsedTime = 0.0f;
-    chrono.isFinished = false;
 
     InitializeOutput();
     DisplayOutput();
@@ -143,7 +144,7 @@ int main()
         UpdateChrono(chrono, deltaTime);
 
         ResetDisplay();
-
+        InitializeOutput();
         WriteChrono(chrono);
         DisplayOutput();
     }
