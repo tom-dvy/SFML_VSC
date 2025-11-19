@@ -57,10 +57,48 @@ void List::AddElement(sListe* liste, char value)
 
 void List::RemoveElementAt(sListe* liste, int removePosition)
 {
-    Element* removeElement = GetElementAt(liste, liste->count - 1);
+    Element* removeElement = GetElementAt(liste, removePosition);
     if (removeElement == nullptr)
     {
         return;
     }
+
+    Element* previous = removeElement->previous;
+    Element* next = removeElement->next;
+
+    if (previous == nullptr)
+    {
+        liste->first = next;
+    }
+    else
+    {
+        previous->next = next;
+    }
     
+    if (next != nullptr)
+    {
+        next->previous = previous;
+    }    
+    delete removeElement;
+
+    liste->count--;
+}
+
+void List::DestroyList(sListe* liste)
+{
+    if (liste == nullptr)
+    {
+        return;
+    }
+
+    Element* current = liste->first;
+    
+    while (current != nullptr)
+    {
+        Element* next = current->next;
+        delete current;
+        current = next;
+    }
+
+    delete liste;
 }

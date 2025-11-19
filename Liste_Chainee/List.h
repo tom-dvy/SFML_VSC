@@ -24,6 +24,8 @@ public:
     void AddElement(sListe* liste, char value);
 
     void RemoveElementAt(sListe* liste, int removePosition);
+    
+    void DestroyList(sListe* liste);
 };
 
 #endif // LIST_H

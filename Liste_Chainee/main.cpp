@@ -15,4 +15,10 @@ int main()
     myList.GetElementAt(liste, 0);
     myList.GetElementAt(liste, 1);
     myList.GetElementAt(liste, 2);
+
+    myList.RemoveElementAt(liste,2);
+
+    myList.DestroyList(liste);
+
+    return 0;
 }
