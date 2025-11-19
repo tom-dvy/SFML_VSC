@@ -6,5 +6,13 @@ int main()
     List myList;
     List::sListe* liste = myList.CreateList();
 
-    std::cout << "Liste créée avec " << liste->count << " éléments" << std::endl;
+    std::cout << "Liste créée" << std::endl;
+
+    myList.AddElement(liste, 'A');
+    myList.AddElement(liste, 'B');
+    myList.AddElement(liste, 'C');
+
+    myList.GetElementAt(liste, 0);
+    myList.GetElementAt(liste, 1);
+    myList.GetElementAt(liste, 2);
 }

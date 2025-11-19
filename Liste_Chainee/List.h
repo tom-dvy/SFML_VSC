@@ -18,6 +18,12 @@ public:
     };
 
     sListe* CreateList();
+
+    Element* GetElementAt(sListe* liste, int position);
+
+    void AddElement(sListe* liste, char value);
+
+    void RemoveElementAt(sListe* liste, int removePosition);
 };
 
 #endif // LIST_H
