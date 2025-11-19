@@ -20,5 +20,10 @@ int main()
 
     myList.DestroyList(liste);
 
+    std::cout << "---------------------------" << std::endl;
+    myList.GetElementAt(liste, 0);
+    myList.GetElementAt(liste, 1);
+    myList.GetElementAt(liste, 2);
+
     return 0;
 }
