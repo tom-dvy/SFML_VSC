@@ -18,7 +18,6 @@ List::Element* List::GetElementAt(sListe* liste, int position)
 {
     if (position < 0 || position >= liste->count)
     {
-        std::cout << "Position invalide : " << position << std::endl;
         return nullptr;
     }
 
@@ -29,7 +28,6 @@ List::Element* List::GetElementAt(sListe* liste, int position)
         current = current->next;
     }
 
-    std::cout << "Element trouvé à " << position << " : " << current->value << std::endl;
     return current;
 }
 

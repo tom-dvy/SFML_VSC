@@ -16,7 +16,14 @@ int main()
     myList.GetElementAt(liste, 1);
     myList.GetElementAt(liste, 2);
 
+    std::cout << "---------------------------" << std::endl;
     myList.RemoveElementAt(liste,2);
+    myList.RemoveElementAt(liste,3);
+    
+    std::cout << "---------------------------" << std::endl;
+    myList.GetElementAt(liste, 0);
+    myList.GetElementAt(liste, 1);
+    myList.GetElementAt(liste, 2);
 
     myList.DestroyList(liste);
 
