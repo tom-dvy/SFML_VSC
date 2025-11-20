@@ -34,7 +34,6 @@ public:
     void ClearParticleSystem(sParticleSystem* particleSystem);
     sParticleSystem CreateParticleSystem(float creationPeriod, float minLifeTime, float maxLifeTime, sf::Vector2f origin, float spawnRadius, float particleSize);
     void DrawParticleSystem(sParticleSystem& particlesystem, sf::RenderWindow& window);
-    void render();
 };
 
 #endif // PARTICULESMANAGER_H
