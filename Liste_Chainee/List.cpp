@@ -86,11 +86,6 @@ void List::RemoveElementAt(sListe* liste, int removePosition)
 
 void List::DestroyList(sListe* liste)
 {
-    if (liste == nullptr)
-    {
-        return;
-    }
-
     Element* current = liste->first;
     
     while (current != nullptr)
