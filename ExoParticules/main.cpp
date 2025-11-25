@@ -1,54 +1,44 @@
 #include <SFML/Graphics.hpp>
 #include "ParticulesManager.h"
 #include <iostream>
+#include <random>
+#include <vector>
 #include <list>
-
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Particle System");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Particles System");
     window.setFramerateLimit(60);
 
     sf::Clock clock;
     ParticulesManager manager;
 
-    ParticulesManager::sParticleSystem mySystem = manager.CreateParticleSystem(2, 2, 5, sf::Vector2f(400, 300), 100, 5);
-    manager.AddParticleToSystem(&mySystem, 3);
-
     while (window.isOpen())
     {
         sf::Event event;
-
         while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
-            
-        }
-        
-        
+            if (event.type == sf::Event::Closed) window.close();
+
         float deltaTime = clock.restart().asSeconds();
 
-        manager.UpdateParticleSystem(&mySystem, deltaTime);
+        manager.UpdateFireworks(deltaTime);
 
         window.clear();
-
-        manager.DrawParticleSystem(mySystem, window);
-
+        manager.DrawFireworks(window);
         window.display();
     }
-    
+
+    return 0;
+}
 
     /*
     std::list<float> floatList = {
-        5.0f, 
-        3.5f, 
-        10.2f, 
-        2.0f, 
-        1.6f, 
-        7.8f, 
+        5.0f,
+        3.5f,
+        10.2f,
+        2.0f,
+        1.6f,
+        7.8f,
         5.1f
     };
 
@@ -56,7 +46,7 @@ int main()
 
     while (floatList.size() != 0)
     {
-        
+
         for (auto &number : floatList)
         {
             number--;
@@ -72,6 +62,3 @@ int main()
         system("pause");
     }
     */
-
-    return 0;
-}
