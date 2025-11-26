@@ -40,16 +40,14 @@ void ParticulesManager::AddParticleToSystem(sParticleSystem *particleSystem, flo
 
 void ParticulesManager::UpdateParticleSystem(sParticleSystem *particleSystem, float deltaTime)
 {
-    if (!particleSystem->isPlaying)
-        return;
-
-    particleSystem->elapsedSystemTime += deltaTime;
-
-    if (particleSystem->systemLifeTime > 0 &&
-        particleSystem->elapsedSystemTime >= particleSystem->systemLifeTime)
+    if (particleSystem->isPlaying)
     {
-        particleSystem->isPlaying = false;
-        return;
+        particleSystem->elapsedSystemTime += deltaTime;
+
+        if (particleSystem->systemLifeTime > 0 && particleSystem->elapsedSystemTime >= particleSystem->systemLifeTime)
+        {
+            particleSystem->isPlaying = false;
+        }
     }
 
     std::list<sParticle>::iterator it = particleSystem->existingParticles.begin();
@@ -62,9 +60,13 @@ void ParticulesManager::UpdateParticleSystem(sParticleSystem *particleSystem, fl
         float t = particule.elapsedTime;
         float maxT = particule.timeToLive;
 
-        float scale = sin(PI * t / maxT);
-        if (scale < 0.0f)
-            scale = 1.0f;
+        float scale = 1.0f;
+        if (maxT > 0.0f)
+        {
+            scale = sin(PI * t / maxT);
+            if (scale < 0.0f)
+                scale = 1.0f;
+        }
 
         particule.shape.setScale(scale, scale);
 
@@ -85,24 +87,27 @@ void ParticulesManager::UpdateParticleSystem(sParticleSystem *particleSystem, fl
         ++it;
     }
 
-    particleSystem->chronoCreation += deltaTime;
-
-    while (particleSystem->chronoCreation > particleSystem->creationPeriod)
+    if (particleSystem->isPlaying)
     {
-        particleSystem->chronoCreation -= particleSystem->creationPeriod;
+        particleSystem->chronoCreation += deltaTime;
 
-        sParticle newParticle;
-        newParticle.timeToLive = particleSystem->minLifeTime + (particleSystem->maxLifeTime - particleSystem->minLifeTime) * ((float)rand() / RAND_MAX);
-        newParticle.moveSpeed = 100.0f;
-        newParticle.direction = sf::Vector2f(0, -1);
-        float size = particleSystem->particleSize * ((float)rand() / RAND_MAX);
-        newParticle.shape.setRadius(size);
-        newParticle.shape.setOrigin(size, size);
-        newParticle.shape.setPosition(particleSystem->origin);
-        newParticle.shape.setFillColor(sf::Color::White);
+        while (particleSystem->chronoCreation > particleSystem->creationPeriod)
+        {
+            particleSystem->chronoCreation -= particleSystem->creationPeriod;
 
-        particleSystem->existingParticles.push_back(newParticle);
+            sParticle newParticle;
+            newParticle.timeToLive = particleSystem->minLifeTime + (particleSystem->maxLifeTime - particleSystem->minLifeTime) * ((float)rand() / RAND_MAX);
+            newParticle.moveSpeed = 100.0f;
+            newParticle.direction = sf::Vector2f(0, -1);
+            float size = particleSystem->particleSize * ((float)rand() / RAND_MAX);
+            newParticle.shape.setRadius(size);
+            newParticle.shape.setOrigin(size, size);
+            newParticle.shape.setPosition(particleSystem->origin);
+            newParticle.shape.setFillColor(sf::Color::White);
 
+            particleSystem->existingParticles.push_back(newParticle);
+
+        }
     }
 
     if (particleSystem->existingParticles.empty())
@@ -113,14 +118,12 @@ void ParticulesManager::UpdateParticleSystem(sParticleSystem *particleSystem, fl
 
 void ParticulesManager::ClearParticleSystem(sParticleSystem *particleSystem)
 {
-    for (auto &particle : particleSystem->existingParticles)
-    {
-        delete &particle;
-    }
-    
     particleSystem->existingParticles.clear();
 
     particleSystem->chronoCreation = 0;
+    particleSystem->elapsedSystemTime = 0.0f;
+    particleSystem->isPlaying = false;
+    particleSystem->hasExploded = false;
 }
 
 ParticulesManager::sParticleSystem ParticulesManager::CreateParticleSystem(float creationPeriod, float minLifeTime, float maxLifeTime, sf::Vector2f origin, float spawnRadius, float particleSize)
