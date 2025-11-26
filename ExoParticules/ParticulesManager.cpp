@@ -113,6 +113,11 @@ void ParticulesManager::UpdateParticleSystem(sParticleSystem *particleSystem, fl
 
 void ParticulesManager::ClearParticleSystem(sParticleSystem *particleSystem)
 {
+    for (auto &particle : particleSystem->existingParticles)
+    {
+        delete &particle;
+    }
+    
     particleSystem->existingParticles.clear();
 
     particleSystem->chronoCreation = 0;

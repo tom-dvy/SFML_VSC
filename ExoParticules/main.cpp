@@ -27,6 +27,11 @@ int main()
         manager.DrawFireworks(window);
         window.display();
     }
+    for(auto &system : manager.fireworkSystems)
+    {
+        manager.ClearParticleSystem(&system);
+    }
+    manager.fireworkSystems.clear();
 
     return 0;
 }
